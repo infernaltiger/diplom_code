@@ -11,5 +11,5 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu') # где �
 dpi=100
 width_inch=8.27 #формат А4 в дюймах
 height_inch=11.69
-supported_extensions = ('.jpg', '.jpeg') # разрешенные расширения фото
+supported_extensions = ('.jpg', '.jpeg', '.png') # разрешенные расширения фото
 
