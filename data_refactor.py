@@ -4,24 +4,28 @@ from PIL import Image
 import fitz #другое название PyMuPDF
 
 
-def change_dpi_A4(image_path, result_name_with_path, dpi=dpi, width_inch=width_inch, height_inch=height_inch):
-    """
-    Смена dpi картинки на основе алгоритма маштабирования через бикубическую интерполяцию.
-    Считаем что на входе идет лист А4.
-    :param image_path: Путь до фото
-    :param result_name_with_path: Новоое назвние и возможный путь результата.
-    :param dpi: Нужный dpi.
-    :param width_inch: Ширина в дюймах.
-    :param height_inch: Длина в дюймах.
-    """
+def change_dpi_A4(folder_path, output_path, dpi=dpi, width_inch=width_inch, height_inch=height_inch):
     desired_width_inch = width_inch
     desired_height_inch = height_inch
     new_dpi = dpi
     new_width = int(desired_width_inch * new_dpi)
     new_height = int(desired_height_inch * new_dpi)
-    with Image.open(image_path) as img:
-        new_img = img.resize((new_width, new_height), Image.BICUBIC)
-        new_img.save(result_name_with_path, dpi=(new_dpi, new_dpi))
+    couter = 0
+    for filename in os.listdir(folder_path):
+        #Проверяем расширение файла
+        if filename.lower().endswith(supported_extensions):
+            # Полный путь к файлу
+            file_path = os.path.join(folder_path, filename)
+            output_file_path = os.path.join(output_path, str(couter) + ".jpg")
+            try:
+                with Image.open(file_path) as img:
+                    new_img = img.resize((new_width, new_height), Image.BICUBIC)
+                    new_img.save(output_file_path, dpi=(new_dpi, new_dpi))
+                couter += 1
+            except Exception as e:
+                print(f"Ошибка при обработке {filename}: {str(e)}")
+
+    print("Обработка завершена!")
 
 
 
